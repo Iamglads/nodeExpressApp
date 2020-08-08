@@ -2,8 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const stuffRoutes = require('./routes/stuff');
+const userRoutes = require('./routes/user');
+const path = require('path');
 const app = express();
 
+
+// connect mongoDB
 mongoose.connect('mongodb+srv://glad:<PASSWORD>@cluster0-ste1b.mongodb.net/test?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
@@ -11,7 +15,7 @@ mongoose.connect('mongodb+srv://glad:<PASSWORD>@cluster0-ste1b.mongodb.net/test?
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 // une application est une série de fonction appelées middleware, chaque element de middleware recoit les objets request et response 
 
-
+// paramerage cors
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -21,6 +25,12 @@ app.use((req, res, next) => {
 
 
 app.use(bodyParser.json());
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
+// routes 
 app.use('/api/stuff', stuffRoutes);
+app.use('/api/auth', userRoutes);
+
+
 
 module.exports = app;
