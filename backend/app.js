@@ -6,9 +6,11 @@ const userRoutes = require('./routes/user');
 const path = require('path');
 const app = express();
 
+const { MONGO_URI} = require('./config');
+
 
 // connect mongoDB
-mongoose.connect('mongodb+srv://glad:<PASSWORD>@cluster0-ste1b.mongodb.net/test?retryWrites=true&w=majority',
+mongoose.connect(MONGO_URI,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
